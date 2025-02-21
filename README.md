@@ -79,5 +79,5 @@ HOW TO COMPILE AND RUN
 example command:
 cd "c:\Users\Desmond Que\GitRepos\Group8-Act2-Divide-Conquer\Group8-Act2-Divide-Conquer\pc-parts-shop"
 
-3. Run this command while in the pc-parts-shop directory
-g++ -I src/ src/main.cpp src/utils/file_handler.cpp src/algorithms/merge_sort.cpp src/algorithms/quick_sort.cpp -o bin/main.exe; if ($?) { .\bin\main.exe }
+3. Run this command while in the pc-parts-shop directory "
+g++ -I src/ src/main.cpp src/utils/file_handler.cpp src/algorithms/merge_sort.cpp src/algorithms/quick_sort.cpp -o bin/main.exe; if ($?) { .\bin\main.exe }"
