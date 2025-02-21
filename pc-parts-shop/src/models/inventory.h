@@ -14,4 +14,4 @@ struct Inventory {
     void updateProductQuantity(const std::string& productName, int quantity);
 };
 
-#endif // INVENTORY_H
+#endif

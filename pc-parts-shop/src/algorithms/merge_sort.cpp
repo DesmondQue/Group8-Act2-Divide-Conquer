@@ -1,7 +1,6 @@
 #include "merge_sort.h"
 
-// Function to merge two halves of an array
-void merge(Product arr[], int left, int mid, int right) {
+void merge(Product arr[], int left, int mid, int right, SortKey key) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
 
@@ -15,7 +14,14 @@ void merge(Product arr[], int left, int mid, int right) {
 
     int i = 0, j = 0, k = left;
     while (i < n1 && j < n2) {
-        if (L[i].price <= R[j].price) {
+        bool compareResult;
+        if (key == SortKey::PRICE) {
+            compareResult = L[i].price <= R[j].price;
+        } else { // SortKey::QUANTITY
+            compareResult = L[i].quantity <= R[j].quantity;
+        }
+
+        if (compareResult) {
             arr[k] = L[i];
             i++;
         } else {
@@ -41,13 +47,12 @@ void merge(Product arr[], int left, int mid, int right) {
     delete[] R;
 }
 
-// Function to implement merge sort
-void mergeSort(Product arr[], int left, int right) {
+void mergeSort(Product arr[], int left, int right, SortKey key) {
     if (left < right) {
         int mid = left + (right - left) / 2;
 
-        mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
-        merge(arr, left, mid, right);
+        mergeSort(arr, left, mid, key);
+        mergeSort(arr, mid + 1, right, key);
+        merge(arr, left, mid, right, key);
     }
 }

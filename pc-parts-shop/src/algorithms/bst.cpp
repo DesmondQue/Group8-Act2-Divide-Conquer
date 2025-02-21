@@ -6,7 +6,7 @@ struct Node {
     Node* left;
     Node* right;
 
-    Node(Product p) : product(p), left(nullptr), right(nullptr) {}
+    Node(Product p) : product(p), left(NULL), right(NULL) {}
 };
 
 class BST {
@@ -14,7 +14,7 @@ private:
     Node* root;
 
     void insert(Node*& node, Product product) {
-        if (node == nullptr) {
+        if (node == NULL) {
             node = new Node(product);
         } else if (product.price < node->product.price) {
             insert(node->left, product);
@@ -24,7 +24,7 @@ private:
     }
 
     bool search(Node* node, std::string productName) {
-        if (node == nullptr) {
+        if (node == NULL) {
             return false;
         }
         if (node->product.name == productName) {
@@ -42,7 +42,7 @@ private:
     }
 
 public:
-    BST() : root(nullptr) {}
+    BST() : root(NULL) {}
 
     ~BST() {
         deleteTree(root);

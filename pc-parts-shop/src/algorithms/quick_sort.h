@@ -1,13 +1,12 @@
 #ifndef QUICK_SORT_H
 #define QUICK_SORT_H
 
-#include <vector>
-#include "product.h"
+#include "../models/product.h"
 
-// Function to perform Quick Sort on a vector of products
-void quickSort(std::vector<Product>& products, int low, int high);
+enum class SortKey;  // Forward declaration since it's defined in merge_sort.h
 
-// Function to partition the vector for Quick Sort
-int partition(std::vector<Product>& products, int low, int high);
+void quickSort(Product arr[], int low, int high, SortKey key);
+int partition(Product arr[], int low, int high, SortKey key);
+void swap(Product* a, Product* b);
 
 #endif // QUICK_SORT_H

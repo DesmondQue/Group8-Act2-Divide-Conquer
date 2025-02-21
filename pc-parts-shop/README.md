@@ -2,7 +2,7 @@
 
 # PC Parts & Essentials Shop
 
-## Required Features:
+# Features:
 
 1) Terminal-based menu with categorized sort-by functions (can be sorted by subcategories) to display products.
 
@@ -61,12 +61,23 @@
     - Update the text file when products are bought by the user (change QTY).
 
 4) Error handling
-    - Make sure there are no bugs in the menu where the user cannot break the program.
+    - Make sure there are no bugs in the menu where the user can break the program at runtime.
 
-## Technical Requirements:
-- Program should use C++.
-- Avoid Classes and use Structures.
-- Program should use these algorithms (they should be user-defined, do not use STL for these):
+## Requirements:
+- Program should be written in C++.
+- Program should use these algorithms (user-defined):
     1) Binary Search Tree Algorithm
     2) Merge Sort Algorithm
     3) Quick Sort Algorithm.
+
+
+HOW TO COMPILE AND RUN
+
+1. Fork the repo and open your terminal in your chosen IDE
+
+2. Make sure you are in the pc-parts-shop directory
+example command:
+cd "c:\Users\Desmond Que\GitRepos\Group8-Act2-Divide-Conquer\Group8-Act2-Divide-Conquer\pc-parts-shop"
+
+3. Run this command while in the pc-parts-shop directory
+g++ -I src/ src/main.cpp src/utils/file_handler.cpp src/algorithms/merge_sort.cpp src/algorithms/quick_sort.cpp -o bin/main.exe; if ($?) { .\bin\main.exe }

@@ -6,14 +6,15 @@
 #include <string>
 
 struct Product {
+    int productNumber;
     char name[100];
     float price;
     int quantity;
     
-    // Main category (GPU, CPU, RAM, etc.)
+    // main category (GPU, CPU, RAM, etc.)
     char category[50];
     
-    // Subcategory fields
+    // subcategory fields
     struct {
         char brand[50];        // AMD, Nvidia, Intel etc.
         char manufacturer[50]; // For GPUs: ASUS, MSI, etc.
@@ -29,7 +30,6 @@ struct Product {
     } specs;
 };
 
-// Category constants
 namespace Categories {
     const char GPU[] = "GPU";
     const char CPU[] = "CPU";
@@ -42,4 +42,4 @@ namespace Categories {
     const char PREBUILT[] = "Prebuilt";
 }
 
-#endif // PRODUCT_H
+#endif

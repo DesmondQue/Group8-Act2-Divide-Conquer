@@ -1,20 +1,20 @@
-RTX4090_ROG_STRIX 1599.99 10 GPU NVIDIA ASUS 40_Series - - - - - - - -
-RTX4080_GAMING_X 1199.99 15 GPU NVIDIA MSI 40_Series - - - - - - - -
-RX7900XTX_NITRO 999.99 12 GPU AMD SAPPHIRE RX_7000 - - - - - - - -
-Ryzen_9_7950X 549.99 20 CPU AMD - Ryzen_9 - - - - - - - -
-i9_14900K 589.99 18 CPU Intel - Core_i9 - - - - - - - -
-Ryzen_7_7800X3D 449.99 25 CPU AMD - Ryzen_7 - - - - - - - -
-Corsair_Vengeance_32GB 159.99 30 RAM - Corsair - - 32GB 3600MHz - - - - -
-GSkill_Trident_64GB 299.99 15 RAM - GSkill - - 64GB 4000MHz - - - - -
-Samsung_990Pro_2TB 179.99 25 Storage - Samsung NVMe_M.2 - 2TB - - - - - -
-WD_Black_SN850X_1TB 129.99 35 Storage - WD NVMe_M.2 - 1TB - - - - - -
-ROG_X670E_HERO 499.99 10 Motherboard AMD ASUS - ATX - - AM5 - - - -
-MPG_Z790_EDGE 329.99 15 Motherboard Intel MSI - ATX - - LGA1700 - - - -
-ROG_Thor_1200P 299.99 12 PSU - ASUS - - - - - 1200W Platinum Fully -
-RM850x 149.99 20 PSU - Corsair - - - - - 850W Gold Fully -
-Lian_Li_O11D_EVO 169.99 15 Case - Lian_Li - ATX - - - - - - -
-H7_Flow 129.99 25 Case - NZXT - ATX - - - - - - -
-NH_D15 89.99 20 Cooling - Noctua - - - - - - - - Air_Cooler
-H150i_Elite 189.99 15 Cooling - Corsair - - - - - - - - 360mm_AIO
-ROG_G35CZ 2499.99 5 Prebuilt - ASUS - - - - - - - - -
-HP_Omen_45L 1999.99 8 Prebuilt - HP - - - - - - - - -
+111 RTX4090_ROG_STRIX 89599.44 10 GPU NVIDIA ASUS 40_Series - - - - - - - -
+222 RTX4080_GAMING_X 67199.44 15 GPU NVIDIA MSI 40_Series - - - - - - - -
+333 RX7900XTX_NITRO 55999.44 12 GPU AMD SAPPHIRE RX_7000 - - - - - - - -
+444 Ryzen_9_7950X 30799.44 20 CPU AMD AMD Ryzen_9 - - - - - - - -
+555 i9_14900K 33039.44 18 CPU Intel Intel Core_i9 - - - - - - - -
+666 Ryzen_7_7800X3D 25199.44 25 CPU AMD AMD Ryzen_7 - - - - - - - -
+777 Corsair_Vengeance_32GB 8959.44 30 RAM Corsair Corsair DDR5 - 32GB 3600MHz - - - - -
+888 GSkill_Trident_64GB 16799.44 15 RAM GSkill GSkill DDR5 - 64GB 4000MHz - - - - -
+999 Samsung_990Pro_2TB 10079.44 25 Storage Samsung Samsung NVMe_M.2 - 2TB - - - - - -
+100 WD_Black_SN850X_1TB 7279.44 35 Storage WD WD NVMe_M.2 - 1TB - - - - - -
+110 ROG_X670E_HERO 27999.44 10 Motherboard ASUS ASUS - ATX - - AM5 - - - -
+120 MPG_Z790_EDGE 18479.44 15 Motherboard MSI MSI - ATX - - LGA1700 - - - -
+130 ROG_Thor_1200P 16799.44 12 PSU ASUS ASUS - - - - - 1200W Platinum Fully -
+140 RM850x 8399.44 20 PSU Corsair Corsair - - - - - 850W Gold Fully -
+150 Lian_Li_O11D_EVO 9519.44 15 Case Lian_Li Lian_Li - ATX - - - - - - -
+160 H7_Flow 7279.44 25 Case NZXT NZXT - ATX - - - - - - -
+170 NH_D15 5039.44 20 Cooling Noctua Noctua - - - - - - - - Air_Cooler
+180 H150i_Elite 10639.44 15 Cooling Corsair Corsair - - - - - - - - 360mm_AIO
+190 ROG_G35CZ 139999.44 5 Prebuilt ASUS ASUS - - - - - - - - -
+200 HP_Omen_45L 111999.44 8 Prebuilt HP HP - - - - - - - - -
