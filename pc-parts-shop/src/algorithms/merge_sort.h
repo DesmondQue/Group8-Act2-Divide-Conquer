@@ -11,4 +11,4 @@ enum class SortKey {
 void merge(Product arr[], int left, int mid, int right, SortKey key);
 void mergeSort(Product arr[], int left, int right, SortKey key);
 
-#endif // MERGE_SORT_H
+#endif 

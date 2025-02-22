@@ -1,5 +1,4 @@
 #include <iostream>
-#include "models/product.h"
 #include "models/cart.h"
 #include "models/inventory.h"
 #include "utils/file_handler.h"
@@ -26,7 +25,7 @@ void displayMenu() {
 
 void displaySearchSortOptions() {
     std::cout << "\n---------------------------------------" << std::endl;
-    std::cout << "Sort Search Results (QuickSort & MergeSort)" << std::endl;
+    std::cout << " G8 | Sort Search Results (QSort & MSort)" << std::endl;
     std::cout << "---------------------------------------" << std::endl;
     std::cout << "[1] Price (Ascending)" << std::endl;
     std::cout << "[2] Price (Descending)" << std::endl;
@@ -68,6 +67,28 @@ void clearInputBuffer() {
     std::cin.ignore(10000, '\n');
 }
 
+void searchProductsMenu(){
+                std::cout << "---------------------------------------" << std::endl;
+                std::cout << "        G8 | Search Products (BST)" << std::endl;
+                std::cout << "---------------------------------------" << std::endl;
+                std::cout << "Select search field:" << std::endl;
+                std::cout << "[1] Brand (AMD, Nvidia, Intel, etc.)" << std::endl;
+                std::cout << "[2] Manufacturer (ASUS, MSI, etc.)" << std::endl;
+                std::cout << "[3] Series (40 Series, Ryzen 7, etc.)" << std::endl;
+                std::cout << "[4] Form Factor (ATX, ITX, etc.)" << std::endl;
+                std::cout << "[5] Capacity (32GB, 1TB, etc.)" << std::endl;
+                std::cout << "[6] Speed (3600MHz, etc.)" << std::endl;
+                std::cout << "[7] Socket (AM5, LGA1700, etc.)" << std::endl;
+                std::cout << "[8] Wattage (850W, 1000W, etc.)" << std::endl;
+                std::cout << "[9] Efficiency (Gold, Platinum, etc.)" << std::endl;
+                std::cout << "[10] Modularity (Fully, Semi, etc.)" << std::endl;
+                std::cout << "[11] Cooling Type (Air, AIO, etc.)" << std::endl;
+                std::cout << "[12] Category (GPU, CPU, etc.)" << std::endl;
+                std::cout << "[13] Product Name" << std::endl;
+                std::cout << "[14] Return to Main Menu" << std::endl;
+                std::cout << "---------------------------------------" << std::endl;
+}
+
 int main() {
     const std::string filename = "data/inventory.txt";
     std::vector<Product> inventory;
@@ -91,24 +112,48 @@ int main() {
         }
         clearInputBuffer();
 
-        switch (choice) {
+        switch (choice) { // BST for each field/subcategory
             case 1: {
-                // search products using BST
+                searchProductsMenu();
+                std::cout << "Enter choice: ";
+                
+                int searchChoice;
+                std::cin >> searchChoice;
+                clearInputBuffer();
+                
+                if (searchChoice == 14) break;
+                
+                std::string field;
+                switch(searchChoice) {
+                    case 1: field = "brand"; break;
+                    case 2: field = "manufacturer"; break;
+                    case 3: field = "series"; break;
+                    case 4: field = "formFactor"; break;
+                    case 5: field = "capacity"; break;
+                    case 6: field = "speed"; break;
+                    case 7: field = "socket"; break;
+                    case 8: field = "wattage"; break;
+                    case 9: field = "efficiency"; break;
+                    case 10: field = "modularity"; break;
+                    case 11: field = "cooling"; break;
+                    case 12: field = "category"; break;
+                    case 13: field = "name"; break;
+                    default:
+                        std::cout << "Invalid choice." << std::endl;
+                        break;
+                }
+                
+                std::cout << "Enter search term: ";
                 std::string searchTerm;
-                std::cout << "---------------------------------------" << std::endl;
-                std::cout << "          Search Products (BST)" << std::endl;
-                std::cout << "---------------------------------------" << std::endl;
-                std::cout << "\nEnter search term (product name, category, brand, etc.): ";
-                std::cin.ignore();
                 std::getline(std::cin, searchTerm);
-
-                auto searchResults = productTree.searchByString(searchTerm);
+                
+                auto searchResults = productTree.search(field, searchTerm);
                 if (searchResults.empty()) {
-                    std::cout << "\nNo products found for '" << searchTerm << "'\n";
+                    std::cout << "\nNo products found matching '" << searchTerm << "' in " << field << std::endl;
                     break;
                 }
 
-                std::cout << "\nSearch Results for '" << searchTerm << "':\n";
+                std::cout << "\nSearch Results:\n";
                 displayProducts(searchResults);
 
                 int sortChoice;
@@ -123,7 +168,7 @@ int main() {
                     std::vector<Product> sortedResults = searchResults;
                     switch(sortChoice) {
                         case 1: {
-                            // Ascending price
+                            // ascending price  using merge sort
                             mergeSort(&sortedResults[0], 0, sortedResults.size() - 1, SortKey::PRICE);
                             displayProducts(sortedResults);
                             break;
@@ -141,7 +186,7 @@ int main() {
                             break;
                         }
                         case 3: {
-                            // descending quantity
+                            // descending quantity using merge sort
                             mergeSort(&sortedResults[0], 0, sortedResults.size() - 1, SortKey::QUANTITY);
                             displayProducts(sortedResults);
                             break;

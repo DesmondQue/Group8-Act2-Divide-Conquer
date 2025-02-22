@@ -2,112 +2,132 @@
 #define BST_H
 
 #include "../models/product.h"
-#include <string>
 #include <vector>
-#include <cstring>
+#include <map>
+#include <string>
 
-// Helper function to convert string to lowercase
-std::string toLower(const std::string& str) {
-    std::string result = str;
-    for (char& c : result) {
-        c = tolower(c);
-    }
-    return result;
-}
-
-// Helper function to convert char array to lowercase string
-std::string charArrayToLower(const char* str) {
-    std::string result = str;
-    for (char& c : result) {
-        c = tolower(c);
-    }
-    return result;
-}
-
-struct Node {
+struct BSTNode {
     Product product;
-    Node* left;
-    Node* right;
-    Node(Product p) : product(p), left(NULL), right(NULL) {}
+    std::string key;
+    BSTNode* left;
+    BSTNode* right;
+    
+    BSTNode(const Product& p, const std::string& k) 
+        : product(p), key(k), left(nullptr), right(nullptr) {}
 };
 
-class BST {
-public:
-    BST() : root(NULL) {}
-    ~BST() { deleteTree(root); }
-
-    void insert(const Product& product) {
-        root = insertRec(root, product);
-    }
-
-    std::vector<Product> searchByString(const std::string& searchStr) {
-        std::vector<Product> results;
-        searchRec(root, toLower(searchStr), results);
-        return results;
-    }
-
+class FieldBST {
 private:
-    Node* root;
-
-    Node* insertRec(Node* node, const Product& product) {
-        if (node == NULL) {
-            return new Node(product);
-        }
+    BSTNode* root;
+    
+    BSTNode* insert(BSTNode* node, const Product& product, const std::string& key) {
+        if (!node) return new BSTNode(product, key);
         
-        if (strcmp(product.name, node->product.name) < 0) {
-            node->left = insertRec(node->left, product);
-        } else {
-            node->right = insertRec(node->right, product);
+        if (key < node->key) {
+            node->left = insert(node->left, product, key);
+        } 
+        else if (key > node->key) {
+            node->right = insert(node->right, product, key);
         }
         return node;
     }
-    //fuzzy search + bst implementation
-    void searchRec(Node* node, const std::string& searchLower, std::vector<Product>& results) {
-        if (node == nullptr) return;
 
-        // Convert all char arrays to lowercase strings
-        std::string name = charArrayToLower(node->product.name);
-        std::string category = charArrayToLower(node->product.category);
-        std::string brand = charArrayToLower(node->product.specs.brand);
-        std::string manufacturer = charArrayToLower(node->product.specs.manufacturer);
-        std::string series = charArrayToLower(node->product.specs.series);
-        std::string formFactor = charArrayToLower(node->product.specs.formFactor);
-        std::string capacity = charArrayToLower(node->product.specs.capacity);
-        std::string speed = charArrayToLower(node->product.specs.speed);
-        std::string socket = charArrayToLower(node->product.specs.socket);
-        std::string wattage = charArrayToLower(node->product.specs.wattage);
-        std::string efficiency = charArrayToLower(node->product.specs.efficiency);
-        std::string modularity = charArrayToLower(node->product.specs.modularity);
-        std::string cooling = charArrayToLower(node->product.specs.cooling);
-
-        // Check if search string exists in any field
-        if (name.find(searchLower) != std::string::npos ||
-            category.find(searchLower) != std::string::npos ||
-            brand.find(searchLower) != std::string::npos ||
-            manufacturer.find(searchLower) != std::string::npos ||
-            series.find(searchLower) != std::string::npos ||
-            formFactor.find(searchLower) != std::string::npos ||
-            capacity.find(searchLower) != std::string::npos ||
-            speed.find(searchLower) != std::string::npos ||
-            socket.find(searchLower) != std::string::npos ||
-            wattage.find(searchLower) != std::string::npos ||
-            efficiency.find(searchLower) != std::string::npos ||
-            modularity.find(searchLower) != std::string::npos ||
-            cooling.find(searchLower) != std::string::npos) {
+    void searchExact(BSTNode* node, const std::string& key, std::vector<Product>& results) const {
+        if (!node) return;
+        
+        // use BST property for efficient traversal
+        if (key < node->key) {
+            searchExact(node->left, key, results);
+        }
+        else if (key > node->key) {
+            searchExact(node->right, key, results);
+        }
+        else {
+            // exact match found
             results.push_back(node->product);
         }
-
-        searchRec(node->left, searchLower, results);
-        searchRec(node->right, searchLower, results);
     }
 
-    void deleteTree(Node* node) {
+    void deleteTree(BSTNode* node) {
         if (node) {
             deleteTree(node->left);
             deleteTree(node->right);
             delete node;
         }
     }
+
+public:
+    FieldBST() : root(nullptr) {}
+    ~FieldBST() { deleteTree(root); }
+    
+    void insert(const Product& product, const std::string& key) {
+        root = insert(root, product, key);
+    }
+    
+    std::vector<Product> search(const std::string& key) const {
+        std::vector<Product> results;
+        searchExact(root, key, results);
+        return results;
+    }
 };
 
-#endif // BST_H
+class BST {
+private:
+    std::map<std::string, FieldBST> fieldTrees;
+
+    std::string toLowerCase(const std::string& str) const {
+        std::string lower;
+        for (char c : str) {
+            if (c >= 'A' && c <= 'Z') {
+                lower += (c + ('a' - 'A'));
+            } else {
+                lower += c;
+            }
+        }
+        return lower;
+    }
+
+    std::string getFieldValue(const Product& product, const std::string& field) const {
+        if (field == "brand") return product.specs.brand;
+        if (field == "manufacturer") return product.specs.manufacturer;
+        if (field == "series") return product.specs.series;
+        if (field == "formFactor") return product.specs.formFactor;
+        if (field == "capacity") return product.specs.capacity;
+        if (field == "speed") return product.specs.speed;
+        if (field == "socket") return product.specs.socket;
+        if (field == "wattage") return product.specs.wattage;
+        if (field == "efficiency") return product.specs.efficiency;
+        if (field == "modularity") return product.specs.modularity;
+        if (field == "cooling") return product.specs.cooling;
+        if (field == "category") return product.category;
+        if (field == "name") return product.name;
+        return "";
+    }
+
+public:
+    void insert(const Product& product) {
+        // create separate BST for each searchable field
+        std::string fields[] = {
+            "brand", "manufacturer", "series", "formFactor",
+            "capacity", "speed", "socket", "wattage",
+            "efficiency", "modularity", "cooling", "category", "name"
+        };
+
+        for (const auto& field : fields) {
+            std::string value = toLowerCase(getFieldValue(product, field));
+            if (!value.empty()) {
+                fieldTrees[field].insert(product, value);
+            }
+        }
+    }
+
+    std::vector<Product> search(const std::string& field, const std::string& term) const {
+        auto it = fieldTrees.find(field);
+        if (it != fieldTrees.end()) {
+            return it->second.search(toLowerCase(term));
+        }
+        return std::vector<Product>();
+    }
+};
+
+#endif
