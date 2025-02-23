@@ -29,22 +29,31 @@ private:
         else if (key > node->key) {
             node->right = insert(node->right, product, key);
         }
+        else {
+            node->right = insert(node->right, product, key);
+        }
         return node;
     }
 
     void searchExact(BSTNode* node, const std::string& key, std::vector<Product>& results) const {
         if (!node) return;
         
-        // use BST property for efficient traversal
         if (key < node->key) {
             searchExact(node->left, key, results);
         }
-        else if (key > node->key) {
-            searchExact(node->right, key, results);
-        }
         else {
-            // exact match found
-            results.push_back(node->product);
+            // if current node matches -> add it
+            if (node->key == key) {
+                results.push_back(node->product);
+            }
+            
+            // continue searching right subtree for more matches
+            searchExact(node->right, key, results);
+            
+            // only search left if were at a matching node 
+            if (node->key == key) {
+                searchExact(node->left, key, results);
+            }
         }
     }
 
