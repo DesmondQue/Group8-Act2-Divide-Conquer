@@ -4,10 +4,117 @@
 #include <cstring>
 #include <algorithm>
 #include <iomanip>
-#include "models/inventory.h"
-#include "utils/file_handler.h"
 #include <vector>
 #include <limits>
+#include <fstream>
+#include <sstream>
+
+struct Product {
+    int productNumber;
+    char name[100];
+    float price;
+    int quantity;
+    char category[50];
+    
+    struct {
+        char brand[50];
+        char manufacturer[50];
+        char series[50];
+        char formFactor[50];
+        char capacity[50];
+        char speed[50];
+        char socket[50];
+        char wattage[50];
+        char efficiency[50];
+        char modularity[50];
+        char cooling[50];
+    } specs;
+};
+
+void prepopulateInventory(const std::string& filename) {
+    std::ofstream file(filename);
+    if (!file) {
+        std::cout << "Error creating file: " << filename << std::endl;
+        return;
+    }
+
+    file << "111 RTX4090_ROG_STRIX 89599.44 10 GPU NVIDIA ASUS 40_Series - - - - - - - -\n";
+    file << "222 RTX4080_GAMING_X 67199.44 15 GPU NVIDIA MSI 40_Series - - - - - - - -\n";
+    file << "333 RX7900XTX_NITRO 55999.44 12 GPU AMD SAPPHIRE RX_7000 - - - - - - - -\n";
+    file << "444 Ryzen_9_7950X 30799.44 20 CPU AMD AMD Ryzen_9 - - - - - - - -\n";
+    file << "555 i9_14900K 33039.44 18 CPU Intel Intel Core_i9 - - - - - - - -\n";
+    file << "666 Ryzen_7_7800X3D 25199.44 25 CPU AMD AMD Ryzen_7 - - - - - - - -\n";
+    file << "777 Corsair_Vengeance_32GB 8959.44 30 RAM Corsair Corsair DDR5 - 32GB 3600MHz - - - - -\n";
+    file << "888 GSkill_Trident_64GB 16799.44 15 RAM GSkill GSkill DDR5 - 64GB 4000MHz - - - - -\n";
+    file << "999 Samsung_990Pro_2TB 10079.44 25 Storage Samsung Samsung NVMe_M.2 - 2TB - - - - - -\n";
+    file << "100 WD_Black_SN850X_1TB 7279.44 35 Storage WD WD NVMe_M.2 - 1TB - - - - - -\n";
+    file << "110 ROG_X670E_HERO 27999.44 10 Motherboard ASUS ASUS - ATX - - AM5 - - - -\n";
+    file << "120 MPG_Z790_EDGE 18479.44 15 Motherboard MSI MSI - ATX - - LGA1700 - - - -\n";
+    file << "130 ROG_Thor_1200P 16799.44 12 PSU ASUS ASUS - - - - - 1200W Platinum Fully -\n";
+    file << "140 RM850x 8399.44 20 PSU Corsair Corsair - - - - - 850W Gold Fully -\n";
+    file << "150 RM1000x 10079.44 18 PSU Corsair Corsair - - - - - 1000W Gold Fully -\n";
+
+    file.close();
+}
+
+void loadInventory(const std::string& filename, std::vector<Product>& inventory) {
+    std::ifstream file(filename);
+    
+    if (!file.good()) {
+        std::cout << "Inventory file not found. Creating new inventory...\n";
+        prepopulateInventory(filename);
+        file.open(filename); 
+    }
+
+    if (!file) {
+        std::cout << "Error opening file: " << filename << std::endl;
+        return;
+    }
+
+    Product product;
+    std::string line;
+    
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        iss >> product.productNumber >> product.name >> product.price >> product.quantity 
+            >> product.category >> product.specs.brand >> product.specs.manufacturer 
+            >> product.specs.series >> product.specs.formFactor >> product.specs.capacity 
+            >> product.specs.speed >> product.specs.socket >> product.specs.wattage 
+            >> product.specs.efficiency >> product.specs.modularity >> product.specs.cooling;
+            
+        inventory.push_back(product);
+    }
+    
+    file.close();
+}
+
+void updateInventory(const std::string& filename, const std::vector<Product>& inventory) {
+    std::ofstream file(filename);
+    if (!file) {
+        std::cout << "Error opening file: " << filename << std::endl;
+        return;
+    }
+
+    for (const auto& product : inventory) {
+        file << product.productNumber << " "
+             << product.name << " " 
+             << product.price << " " 
+             << product.quantity << " " 
+             << product.category << " "
+             << product.specs.brand << " "
+             << product.specs.manufacturer << " "
+             << product.specs.series << " "
+             << product.specs.formFactor << " "
+             << product.specs.capacity << " "
+             << product.specs.speed << " "
+             << product.specs.socket << " "
+             << product.specs.wattage << " "
+             << product.specs.efficiency << " "
+             << product.specs.modularity << " "
+             << product.specs.cooling << "\n";
+    }
+    file.close();
+}
 
 void displayMenu() {
     system("cls");
@@ -23,7 +130,6 @@ void displayMenu() {
     std::cout << "---------------------------------------" << std::endl;
     std::cout << "Please select an option: ";
 }
-
 
 std::string toLowerCase(const char* str) {
     std::string result = str;
@@ -95,7 +201,6 @@ void clearInputBuffer() {
     std::cin.clear();
     std::cin.ignore(10000, '\n');
 }
-
 
 int getNextProductNumber(const std::vector<Product>& inventory) {
     int maxNumber = 0;
