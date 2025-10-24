@@ -322,7 +322,7 @@ int main() {
                             }
                         }
                         
-                        std::cout << "Quantity [" << product.quantity << "]: ";
+                        std::cout << "Quantity (press Enter to keep current) [" << product.quantity << "]: ";
                         char quantityInput[100];
                         std::cin.getline(quantityInput, 100);
                         if (quantityInput[0] != '\0') {
