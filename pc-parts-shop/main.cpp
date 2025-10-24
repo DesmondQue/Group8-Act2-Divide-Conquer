@@ -190,11 +190,29 @@ int main() {
     int choice;
     do {
         displayMenu();
-        while (!(std::cin >> choice)) {
-            clearInputBuffer();
-            std::cout << "Invalid input. Please enter a number: ";
+        
+        // Read entire line and validate
+        std::string input;
+        std::getline(std::cin, input);
+        
+        // Remove leading/trailing spaces
+        size_t start = input.find_first_not_of(" \t");
+        size_t end = input.find_last_not_of(" \t");
+        if (start != std::string::npos && end != std::string::npos) {
+            input = input.substr(start, end - start + 1);
+        } else {
+            input = "";
         }
-        clearInputBuffer();
+        
+        // Check if input is a valid single digit 1-6
+        if (input.length() != 1 || input[0] < '1' || input[0] > '6') {
+            std::cout << "Invalid option. Please enter a number between 1-6." << std::endl;
+            std::cout << "[Press Enter to continue]";
+            std::cin.get();
+            continue;
+        }
+        
+        choice = input[0] - '0'; // Convert char to int
 
         switch (choice) {
             case 1: {
@@ -202,6 +220,17 @@ int main() {
                 std::cout << "---------------------------------------" << std::endl;
                 std::cout << "        G8 | Search Products" << std::endl;
                 std::cout << "---------------------------------------" << std::endl;
+                
+                if (inventory.empty()) {
+                    std::cout << "\n===========================================\n";
+                    std::cout << "  ERROR: No products in the inventory!\n";
+                    std::cout << "  Please add products first.\n";
+                    std::cout << "===========================================\n";
+                    std::cout << "[Press Enter to continue]";
+                    std::cin.get();
+                    break;
+                }
+                
                 std::cout << "Enter search term: ";
                 
                 std::string searchTerm;
@@ -226,6 +255,17 @@ int main() {
                 system("cls");
                 std::cout << "All Available Products:\n";
                 std::cout << "---------------------------------------\n";
+                
+                if (inventory.empty()) {
+                    std::cout << "\n===========================================\n";
+                    std::cout << "  ERROR: No products in the inventory!\n";
+                    std::cout << "  Please add products first.\n";
+                    std::cout << "===========================================\n";
+                    std::cout << "[Press Enter to continue]";
+                    std::cin.get();
+                    break;
+                }
+                
                 displayProducts(inventory);
                 break;
             }
@@ -321,6 +361,16 @@ int main() {
                 std::cout << "---------------------------------------" << std::endl;
                 std::cout << "        G8 | Edit Product" << std::endl;
                 std::cout << "---------------------------------------" << std::endl;
+                
+                if (inventory.empty()) {
+                    std::cout << "\n===========================================\n";
+                    std::cout << "  ERROR: No products in the inventory!\n";
+                    std::cout << "  Please add products first.\n";
+                    std::cout << "===========================================\n";
+                    std::cout << "[Press Enter to continue]";
+                    std::cin.get();
+                    break;
+                }
                 
                 int productId;
                 std::cout << "Enter product ID to edit: ";
@@ -440,6 +490,16 @@ int main() {
                 std::cout << "        G8 | Delete Product" << std::endl;
                 std::cout << "---------------------------------------" << std::endl;
                 
+                if (inventory.empty()) {
+                    std::cout << "\n===========================================\n";
+                    std::cout << "  ERROR: No products in the inventory!\n";
+                    std::cout << "  Cannot delete from an empty inventory.\n";
+                    std::cout << "===========================================\n";
+                    std::cout << "[Press Enter to continue]";
+                    std::cin.get();
+                    break;
+                }
+                
                 int productId;
                 std::cout << "Enter product ID to delete: ";
                 while (!(std::cin >> productId)) {
@@ -503,14 +563,10 @@ int main() {
                 } else {
                     std::cout << "Exit cancelled. Returning to menu..." << std::endl;
                     std::cout << "[Press Enter to continue]";
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
                     choice = 0; // Reset choice to continue loop
                 }
                 break;
-            default:
-                std::cout << "Invalid option. Please try again." << std::endl;
-                std::cout << "[Press Enter to continue]";
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     } while (choice != 6);
 
