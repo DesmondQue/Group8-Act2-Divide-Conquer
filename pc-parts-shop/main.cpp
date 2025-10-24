@@ -236,6 +236,14 @@ int main() {
                 std::string searchTerm;
                 std::getline(std::cin, searchTerm);
                 
+                // Check if search term is empty
+                if (searchTerm.empty()) {
+                    std::cout << "\nError: Search term cannot be empty." << std::endl;
+                    std::cout << "[Press Enter to continue]";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    break;
+                }
+                
                 auto searchResults = searchProducts(inventory, searchTerm);
                 
                 if (searchResults.empty()) {
