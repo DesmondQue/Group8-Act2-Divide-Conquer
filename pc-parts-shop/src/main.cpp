@@ -42,19 +42,12 @@ std::vector<Product> searchProducts(const std::vector<Product>& inventory, const
     std::vector<Product> results;
     
     for (const auto& product : inventory) {
+        // Convert ID to string for searching
+        std::string idStr = std::to_string(product.id);
+        
         if (containsSubstring(product.name, searchTerm) ||
-            containsSubstring(product.category, searchTerm) ||
-            containsSubstring(product.specs.brand, searchTerm) ||
-            containsSubstring(product.specs.manufacturer, searchTerm) ||
-            containsSubstring(product.specs.series, searchTerm) ||
-            containsSubstring(product.specs.formFactor, searchTerm) ||
-            containsSubstring(product.specs.capacity, searchTerm) ||
-            containsSubstring(product.specs.speed, searchTerm) ||
-            containsSubstring(product.specs.socket, searchTerm) ||
-            containsSubstring(product.specs.wattage, searchTerm) ||
-            containsSubstring(product.specs.efficiency, searchTerm) ||
-            containsSubstring(product.specs.modularity, searchTerm) ||
-            containsSubstring(product.specs.cooling, searchTerm)) {
+            containsSubstring(product.type, searchTerm) ||
+            containsSubstring(idStr.c_str(), searchTerm)) {
             results.push_back(product);
         }
     }
@@ -69,10 +62,9 @@ void displayProducts(const std::vector<Product>& products) {
     }
 
     for (const auto& product : products) {
-        std::cout << "#" << product.productNumber << " | " << product.name 
-                  << " | PHP " << std::fixed << std::setprecision(2) << product.price 
-                  << " | Qty: " << product.quantity 
-                  << " | " << product.specs.brand << " " << product.specs.series << std::endl;
+        std::cout << "ID: " << product.id << " | " << product.name 
+                  << " | Type: " << product.type 
+                  << " | Qty: " << product.quantity << std::endl;
     }
     std::cout << "\n[Press Enter to continue]";
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -80,14 +72,10 @@ void displayProducts(const std::vector<Product>& products) {
 
 void displayProductDetails(const Product& product) {
     std::cout << "\n---------------------------------------" << std::endl;
-    std::cout << "Product #: " << product.productNumber << std::endl;
+    std::cout << "ID: " << product.id << std::endl;
     std::cout << "Name: " << product.name << std::endl;
-    std::cout << "Price: PHP " << std::fixed << std::setprecision(2) << product.price << std::endl;
+    std::cout << "Type: " << product.type << std::endl;
     std::cout << "Quantity: " << product.quantity << std::endl;
-    std::cout << "Category: " << product.category << std::endl;
-    std::cout << "Brand: " << product.specs.brand << std::endl;
-    std::cout << "Manufacturer: " << product.specs.manufacturer << std::endl;
-    std::cout << "Series: " << product.specs.series << std::endl;
     std::cout << "---------------------------------------" << std::endl;
 }
 
@@ -100,8 +88,8 @@ void clearInputBuffer() {
 int getNextProductNumber(const std::vector<Product>& inventory) {
     int maxNumber = 0;
     for (const auto& product : inventory) {
-        if (product.productNumber > maxNumber) {
-            maxNumber = product.productNumber;
+        if (product.id > maxNumber) {
+            maxNumber = product.id;
         }
     }
     return maxNumber + 1;
@@ -162,23 +150,66 @@ int main() {
                 std::cout << "---------------------------------------" << std::endl;
                 
                 Product newProduct;
-                newProduct.productNumber = getNextProductNumber(inventory);
+                newProduct.id = getNextProductNumber(inventory);
                 
-                std::cout << "Product Number (auto-generated): " << newProduct.productNumber << std::endl;
+                std::cout << "ID (auto-generated): " << newProduct.id << std::endl;
                 
-                std::cout << "Enter product name: ";
-                std::cin.getline(newProduct.name, 100);
-                
-                std::cout << "Enter price (max 500,000): ";
-                while (!(std::cin >> newProduct.price) || newProduct.price < 0 || newProduct.price > 500000) {
-                    clearInputBuffer();
-                    if (newProduct.price > 500000) {
-                        std::cout << "Price exceeds maximum limit of 500,000. Please enter a valid price: ";
+                // Product name with space validation
+                bool validName = false;
+                while (!validName) {
+                    std::cout << "Enter product name (no spaces, use _ or - instead): ";
+                    std::cin.getline(newProduct.name, 100);
+                    
+                    // Check for spaces
+                    bool hasSpace = false;
+                    for (int i = 0; newProduct.name[i] != '\0'; i++) {
+                        if (newProduct.name[i] == ' ') {
+                            hasSpace = true;
+                            break;
+                        }
+                    }
+                    
+                    if (hasSpace) {
+                        std::cout << "Error: Product name cannot contain spaces. Use underscores (_) or hyphens (-) instead.\n";
+                    } else if (newProduct.name[0] == '\0') {
+                        std::cout << "Error: Product name cannot be empty.\n";
                     } else {
-                        std::cout << "Invalid price. Please enter a valid number: ";
+                        validName = true;
                     }
                 }
+                
+                // Display type selection menu
+                std::cout << "\nSelect product type:" << std::endl;
+                std::cout << "[1] GPU" << std::endl;
+                std::cout << "[2] CPU" << std::endl;
+                std::cout << "[3] RAM" << std::endl;
+                std::cout << "[4] Storage" << std::endl;
+                std::cout << "[5] Motherboard" << std::endl;
+                std::cout << "[6] PSU" << std::endl;
+                std::cout << "[7] Case" << std::endl;
+                std::cout << "[8] Cooling" << std::endl;
+                std::cout << "[9] Prebuilt" << std::endl;
+                std::cout << "Choose type (1-9): ";
+                
+                int typeChoice;
+                while (!(std::cin >> typeChoice) || typeChoice < 1 || typeChoice > 9) {
+                    clearInputBuffer();
+                    std::cout << "Invalid choice. Please enter a number between 1-9: ";
+                }
                 clearInputBuffer();
+                
+                // Set type based on choice
+                switch (typeChoice) {
+                    case 1: strcpy(newProduct.type, "GPU"); break;
+                    case 2: strcpy(newProduct.type, "CPU"); break;
+                    case 3: strcpy(newProduct.type, "RAM"); break;
+                    case 4: strcpy(newProduct.type, "Storage"); break;
+                    case 5: strcpy(newProduct.type, "Motherboard"); break;
+                    case 6: strcpy(newProduct.type, "PSU"); break;
+                    case 7: strcpy(newProduct.type, "Case"); break;
+                    case 8: strcpy(newProduct.type, "Cooling"); break;
+                    case 9: strcpy(newProduct.type, "Prebuilt"); break;
+                }
                 
                 std::cout << "Enter quantity (max 1,000): ";
                 while (!(std::cin >> newProduct.quantity) || newProduct.quantity < 0 || newProduct.quantity > 1000) {
@@ -190,18 +221,6 @@ int main() {
                     }
                 }
                 clearInputBuffer();
-                
-                std::cout << "Enter category: ";
-                std::cin.getline(newProduct.category, 50);
-                
-                std::cout << "Enter brand: ";
-                std::cin.getline(newProduct.specs.brand, 50);
-                
-                std::cout << "Enter manufacturer: ";
-                std::cin.getline(newProduct.specs.manufacturer, 50);
-                
-                std::cout << "Enter series: ";
-                std::cin.getline(newProduct.specs.series, 50);
                 
                 inventory.push_back(newProduct);
                 updateInventory(filename, inventory);
@@ -217,17 +236,17 @@ int main() {
                 std::cout << "        G8 | Edit Product" << std::endl;
                 std::cout << "---------------------------------------" << std::endl;
                 
-                int productNumber;
-                std::cout << "Enter product number to edit: ";
-                while (!(std::cin >> productNumber)) {
+                int productId;
+                std::cout << "Enter product ID to edit: ";
+                while (!(std::cin >> productId)) {
                     clearInputBuffer();
-                    std::cout << "Invalid input. Please enter a valid product number: ";
+                    std::cout << "Invalid input. Please enter a valid product ID: ";
                 }
                 clearInputBuffer();
                 
                 bool found = false;
                 for (auto& product : inventory) {
-                    if (product.productNumber == productNumber) {
+                    if (product.id == productId) {
                         found = true;
                         
                         std::cout << "\nCurrent product details:";
@@ -235,46 +254,84 @@ int main() {
                         
                         std::cout << "\nEnter new details (press Enter to keep current value):\n";
                         
-                        std::cout << "Name [" << product.name << "]: ";
-                        char input[100];
-                        std::cin.getline(input, 100);
-                        if (input[0] != '\0') strcpy(product.name, input);
+                        // Name with space validation
+                        bool validEdit = false;
+                        while (!validEdit) {
+                            std::cout << "Name (no spaces, use _ or -) [" << product.name << "]: ";
+                            char input[100];
+                            std::cin.getline(input, 100);
+                            
+                            if (input[0] == '\0') {
+                                // User pressed Enter, keep current value
+                                validEdit = true;
+                            } else {
+                                // Check for spaces
+                                bool hasSpace = false;
+                                for (int i = 0; input[i] != '\0'; i++) {
+                                    if (input[i] == ' ') {
+                                        hasSpace = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (hasSpace) {
+                                    std::cout << "Error: Product name cannot contain spaces. Use underscores (_) or hyphens (-) instead.\n";
+                                } else {
+                                    strcpy(product.name, input);
+                                    validEdit = true;
+                                }
+                            }
+                        }
                         
-                        std::cout << "Price [" << product.price << "]: ";
-                        std::cin.getline(input, 100);
-                        if (input[0] != '\0') {
-                            try {
-                                product.price = std::stof(input);
-                            } catch (...) {
-                                std::cout << "Invalid price, keeping current value." << std::endl;
+                        // Type selection with menu
+                        std::cout << "Change Type? (y for YES/others for NO) [Current: " << product.type << "]: ";
+                        char changeType;
+                        std::cin >> changeType;
+                        clearInputBuffer();
+                        
+                        if (changeType == 'y' || changeType == 'Y') {
+                            std::cout << "\nSelect new product type:" << std::endl;
+                            std::cout << "[1] GPU" << std::endl;
+                            std::cout << "[2] CPU" << std::endl;
+                            std::cout << "[3] RAM" << std::endl;
+                            std::cout << "[4] Storage" << std::endl;
+                            std::cout << "[5] Motherboard" << std::endl;
+                            std::cout << "[6] PSU" << std::endl;
+                            std::cout << "[7] Case" << std::endl;
+                            std::cout << "[8] Cooling" << std::endl;
+                            std::cout << "[9] Prebuilt" << std::endl;
+                            std::cout << "Choose type (1-9): ";
+                            
+                            int typeChoice;
+                            while (!(std::cin >> typeChoice) || typeChoice < 1 || typeChoice > 9) {
+                                clearInputBuffer();
+                                std::cout << "Invalid choice. Please enter a number between 1-9: ";
+                            }
+                            clearInputBuffer();
+                            
+                            switch (typeChoice) {
+                                case 1: strcpy(product.type, "GPU"); break;
+                                case 2: strcpy(product.type, "CPU"); break;
+                                case 3: strcpy(product.type, "RAM"); break;
+                                case 4: strcpy(product.type, "Storage"); break;
+                                case 5: strcpy(product.type, "Motherboard"); break;
+                                case 6: strcpy(product.type, "PSU"); break;
+                                case 7: strcpy(product.type, "Case"); break;
+                                case 8: strcpy(product.type, "Cooling"); break;
+                                case 9: strcpy(product.type, "Prebuilt"); break;
                             }
                         }
                         
                         std::cout << "Quantity [" << product.quantity << "]: ";
-                        std::cin.getline(input, 100);
-                        if (input[0] != '\0') {
+                        char quantityInput[100];
+                        std::cin.getline(quantityInput, 100);
+                        if (quantityInput[0] != '\0') {
                             try {
-                                product.quantity = std::stoi(input);
+                                product.quantity = std::stoi(quantityInput);
                             } catch (...) {
                                 std::cout << "Invalid quantity, keeping current value." << std::endl;
                             }
                         }
-                        
-                        std::cout << "Category [" << product.category << "]: ";
-                        std::cin.getline(input, 100);
-                        if (input[0] != '\0') strcpy(product.category, input);
-                        
-                        std::cout << "Brand [" << product.specs.brand << "]: ";
-                        std::cin.getline(input, 100);
-                        if (input[0] != '\0') strcpy(product.specs.brand, input);
-                        
-                        std::cout << "Manufacturer [" << product.specs.manufacturer << "]: ";
-                        std::cin.getline(input, 100);
-                        if (input[0] != '\0') strcpy(product.specs.manufacturer, input);
-                        
-                        std::cout << "Series [" << product.specs.series << "]: ";
-                        std::cin.getline(input, 100);
-                        if (input[0] != '\0') strcpy(product.specs.series, input);
                         
                         updateInventory(filename, inventory);
                         
@@ -297,23 +354,23 @@ int main() {
                 std::cout << "        G8 | Delete Product" << std::endl;
                 std::cout << "---------------------------------------" << std::endl;
                 
-                int productNumber;
-                std::cout << "Enter product number to delete: ";
-                while (!(std::cin >> productNumber)) {
+                int productId;
+                std::cout << "Enter product ID to delete: ";
+                while (!(std::cin >> productId)) {
                     clearInputBuffer();
-                    std::cout << "Invalid input. Please enter a valid product number: ";
+                    std::cout << "Invalid input. Please enter a valid product ID: ";
                 }
                 clearInputBuffer();
                 
                 bool found = false;
                 for (auto it = inventory.begin(); it != inventory.end(); ++it) {
-                    if (it->productNumber == productNumber) {
+                    if (it->id == productId) {
                         found = true;
                         
                         std::cout << "\nProduct to delete:";
                         displayProductDetails(*it);
                         
-                        std::cout << "\nAre you sure you want to delete this product? (y/n): ";
+                        std::cout << "\nAre you sure you want to delete this product? (y for YES/others for NO): ";
                         char confirm;
                         std::cin >> confirm;
                         clearInputBuffer();
@@ -341,12 +398,28 @@ int main() {
             case 6:
                 system("cls");
                 std::cout << "---------------------------------------" << std::endl;
-                std::cout << "  Thank you for using our system!" << std::endl;
+                std::cout << "   Are you sure you want to exit?" << std::endl;
                 std::cout << "---------------------------------------" << std::endl;
-                std::cout << "             MADE BY" << std::endl << std::endl;
-                std::cout << "   QUE, ADRIAN | QUE, DESMOND" << std::endl;
-                std::cout << "      VALENTINO, FERDINAND" << std::endl;
-                std::cout << "---------------------------------------" << std::endl;
+                std::cout << "Confirm exit (y for YES/others for NO): ";
+                char exitConfirm;
+                std::cin >> exitConfirm;
+                clearInputBuffer();
+                
+                if (exitConfirm == 'y' || exitConfirm == 'Y') {
+                    system("cls");
+                    std::cout << "---------------------------------------" << std::endl;
+                    std::cout << "  Thank you for using our system!" << std::endl;
+                    std::cout << "---------------------------------------" << std::endl;
+                    std::cout << "             MADE BY" << std::endl << std::endl;
+                    std::cout << "   QUE, ADRIAN | QUE, DESMOND" << std::endl;
+                    std::cout << "      VALENTINO, FERDINAND" << std::endl;
+                    std::cout << "---------------------------------------" << std::endl;
+                } else {
+                    std::cout << "Exit cancelled. Returning to menu..." << std::endl;
+                    std::cout << "[Press Enter to continue]";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    choice = 0; // Reset choice to continue loop
+                }
                 break;
             default:
                 std::cout << "Invalid option. Please try again." << std::endl;

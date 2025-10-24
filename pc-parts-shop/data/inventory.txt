@@ -1,24 +1,21 @@
-111 RTX4090_ROG_STRIX 89599.4 9 GPU NVIDIA ASUS 40_Series - - - - - - - -
-222 RTX4080_GAMING_X 67199.4 15 GPU NVIDIA MSI 40_Series - - - - - - - -
-333 RX7900XTX_NITRO 55999.4 12 GPU AMD SAPPHIRE RX_7000 - - - - - - - -
-444 Ryzen_9_7950X 30799.4 20 CPU AMD AMD Ryzen_9 - - - - - - - -
-555 i9_14900K 33039.4 18 CPU Intel Intel Core_i9 - - - - - - - -
-666 Ryzen_7_7800X3D 25199.4 25 CPU AMD AMD Ryzen_7 - - - - - - - -
-777 Corsair_Vengeance_32GB 8959.44 30 RAM Corsair Corsair DDR5 - 32GB 3600MHz - - - - -
-888 GSkill_Trident_64GB 16799.4 15 RAM GSkill GSkill DDR5 - 64GB 4000MHz - - - - -
-999 Samsung_990Pro_2TB 10079.4 25 Storage Samsung Samsung NVMe_M.2 - 2TB - - - - - -
-100 WD_Black_SN850X_1TB 7279.44 35 Storage WD WD NVMe_M.2 - 1TB - - - - - -
-110 ROG_X670E_HERO 27999.4 10 Motherboard ASUS ASUS - ATX - - AM5 - - - -
-120 MPG_Z790_EDGE 18479.4 15 Motherboard MSI MSI - ATX - - LGA1700 - - - -
-130 ROG_Thor_1200P 16799.4 12 PSU ASUS ASUS - - - - - 1200W Platinum Fully -
-140 RM850x 8399.44 20 PSU Corsair Corsair - - - - - 850W Gold Fully -
-150 Lian_Li_O11D_EVO 9519.44 15 Case Lian_Li Lian_Li - ATX - - - - - - -
-160 H7_Flow 7279.44 25 Case NZXT NZXT - ATX - - - - - - -
-170 NH_D15 5039.44 20 Cooling Noctua Noctua - - - - - - - - Air_Cooler
-180 H150i_Elite 10639.4 15 Cooling Corsair Corsair - - - - - - - - 360mm_AIO
-190 ROG_G35CZ 139999 5 Prebuilt ASUS ASUS - - - - - - - - -
-200 HP_Omen_45L 111999 8 Prebuilt HP HP - - - - - - - - -
-1000 a 500 0 q q q q € . Hö_D e A r - -
-1001 EW300 3750 10 IEMs SIMGOT SIMGOT EW € M ˆùß: e A r - -
-1002 a 1e+25 25 52 23 4 € ç Øõ_#ÿ e A r r - -
-1003 a 500000 5000000 a a a a €  _  hûÍ e A r
+111 RTX4090_ROG_STRIX GPU 10
+222 RTX4080_GAMING_X GPU 15
+333 RX7900XTX_NITRO GPU 12
+444 Ryzen_9_7950X CPU 20
+555 i9_14900K CPU 18
+666 Ryzen_7_7800X3D CPU 25
+777 Corsair_Vengeance_32GB RAM 30
+888 GSkill_Trident_64GB RAM 15
+999 Samsung_990Pro_2TB Storage 25
+100 WD_Black_SN850X_1TB Storage 35
+110 ROG_X670E_HERO Motherboard 10
+120 MPG_Z790_EDGE Motherboard 15
+130 ROG_Thor_1200P PSU 12
+140 RM850x PSU 20
+150 RM1000x PSU 18
+160 Lian_Li_O11D_EVO Case 15
+170 H7_Flow Case 25
+180 NH_D15 Cooling 20
+190 H150i_Elite Cooling 15
+200 ROG_G35CZ Prebuilt 5
+1000 NVIDIA_GTX_1060_6GB GPU 1000
